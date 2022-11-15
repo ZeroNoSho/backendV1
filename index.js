@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const ytdl = require("ytdl-core");
+const instagramGetUrl = require("instagram-url-direct");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -13,7 +14,22 @@ app.get("/", function (req, res) {
   res.json({ nama: "Susscess" });
 });
 
-app.get("/download", async (req, res) => {
+app.get("/instagram", async (req, res) => {
+  try {
+    const url = req.query.url;
+    let links = await instagramGetUrl(`${url}`);
+    let data = {
+      link: url,
+      video: links,
+    };
+    res.json({ data });
+    return res.send(data);
+  } catch (error) {
+    return res.status(500);
+  }
+});
+
+app.get("/youtube", async (req, res) => {
   try {
     const url = req.query.url;
     const videoId = await ytdl.getURLVideoID(url);
