@@ -48,7 +48,7 @@ app.get("/youtube", async (req, res) => {
   }
 });
 
-app.use("/tiktok", async (req, res) => {
+app.get("/tiktok", async (req, res) => {
   const url = req.query.url;
   const options = {
     method: "GET",
@@ -71,5 +71,6 @@ app.use("/tiktok", async (req, res) => {
       console.error(error);
     });
 });
+
 const PORT = process.env.PORT || 9000;
 app.listen(PORT);
