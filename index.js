@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const ytdl = require("ytdl-core");
+const axios = require("axios");
 const instagramGetUrl = require("instagram-url-direct");
 
 app.use((req, res, next) => {
@@ -47,5 +48,28 @@ app.get("/youtube", async (req, res) => {
   }
 });
 
+app.use("/tiktok", async (req, res) => {
+  const url = req.query.url;
+  const options = {
+    method: "GET",
+    url: "https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid/index",
+    params: {
+      url: `${url}`,
+    },
+    headers: {
+      "X-RapidAPI-Key": "e9aa8e1ccemsha7f14839378aeffp1fb394jsnffc6cd00131a",
+      "X-RapidAPI-Host": "tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com",
+    },
+  };
+  axios
+    .request(options)
+    .then(function (response) {
+      res.json(response.data);
+      res.send(response.data);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+});
 const PORT = process.env.PORT || 9000;
 app.listen(PORT);
